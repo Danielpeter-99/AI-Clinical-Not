@@ -1,4 +1,14 @@
-openai==1.23.6
 SpeechRecognition==3.10.4
 PyPDF2==3.0.1
 PyAudio==0.2.14
+pillow==10.3.0
+matplotlib==3.8.4
+pandas==2.2.2
+seaborn==0.13.2
+openai==1.26.0
+pdf2image==1.17.0
+reportlab==4.2.0
+pygame==2.5.2
+torchxrayvision==1.2.2
+scikit-image==0.23.2
+pydub==0.25.1

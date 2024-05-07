@@ -45,7 +45,7 @@ Once the environment variables setup, the file may be ran using
 
 
 ```bash
-python lab-report-interpreter.py
+python app-poc-lab-interpreter.py
 ```
 
 ## License

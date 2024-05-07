@@ -1,12 +1,10 @@
 import textwrap
-import google.generativeai as genai
+# import google.generativeai as genai
 import os
-from dotenv import load_dotenv
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import messagebox
-import re
 import tkinter.font as tkFont
 from collections import Counter
 from PIL import Image
@@ -14,7 +12,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import pandas as pd
 import seaborn as sns
-import re
 import re
 import matplotlib.pyplot as plt
 import openai, os, requests
