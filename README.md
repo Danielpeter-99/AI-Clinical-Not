@@ -1,6 +1,8 @@
 # AI-Clinical-Note
 AI Clinical Note for Microsoft AI Hackathon 2024
 
+The project is coded 45% faster with Github Copilot extension on VSCode
+
 ## Demo
 
 https://github.com/Danielpeter-99/AI-Clinical-Not/assets/70642181/b0e227c8-9a7c-4dc4-af38-80d96f5b8639
