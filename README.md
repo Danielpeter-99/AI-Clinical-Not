@@ -1,9 +1,9 @@
-# AI-Clinical-Assistant
-AI Clinical Assistant for Microsoft AI Hackathon 2024
+# AI-Clinical-Note
+AI Clinical Note for Microsoft AI Hackathon 2024
 
 ## Demo
 
-https://github.com/Danielpeter-99/AI-Clinical-Note/assets/70642181/295ce6bf-cc31-4a94-8552-0b9065ad77fc
+https://github.com/Danielpeter-99/AI-Clinical-Not/assets/70642181/b0e227c8-9a7c-4dc4-af38-80d96f5b8639
 
 **This application, coded in Python with Tkinter for the GUI, appears to be an interface named "AI Clinical". The key features and functionalities are as follows:**
 
