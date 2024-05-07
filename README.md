@@ -1,7 +1,7 @@
 # AI-Clinical-Note
 AI Clinical Note for Microsoft AI Hackathon 2024
 
-The project is coded 45% faster with Github Copilot extension on VSCode
+The project is coded 45% faster with [Github Copilot](https://github.com/features/copilot) extension on VSCode
 
 ## Demo
 
