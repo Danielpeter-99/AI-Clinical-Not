@@ -36,6 +36,7 @@ from PIL import Image
 import io
 
 openai.api_type = os.environ.get("OPENAI_API_TYPE")
+print(openai.api_type)
 # Azure OpenAI on your own data is only supported by the 2023-08-01-preview API version
 openai.api_version = os.environ.get("OPENAI_API_VERSION")
 # Azure OpenAI setup
