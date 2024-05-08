@@ -1,4 +1,3 @@
-import textwrap
 import os
 import tkinter as tk
 from tkinter import filedialog
@@ -43,6 +42,7 @@ openai.api_version = os.environ.get("OPENAI_API_VERSION")
 openai.api_base = os.environ.get("OPENAI_API_BASE")
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 deployment_id = os.environ.get("OPENAI_DEPLOYMENT_ID")
+
 
 def verify_login(username, password, login_top_level, root):
     # Dummy authentication logic (replace with your own logic)
@@ -287,55 +287,87 @@ def analyze_lab_result(multimodal_text, left_frame):
     message_label = tk.Label(left_frame, text=answer, fg='black', font=("Times New Roman", 10), wraplength=400)
     message_label.pack(pady=25)  # Place the label below the image
 
-# Function to open the sample PDF file in a web browser
-def download_sample_pdf():
-    # Open the PDF file in read-binary mode
 
-    # read your existing PDF
+def download_sample_pdf():
+    # Open the existing PDF
     existing_pdf = PdfReader(open(lab_path, "rb"))
-    
-    packet = io.BytesIO()
-    can = canvas.Canvas(packet, pagesize=(22 * 72, 11 * 72))
-    # Create a canvas with letter size in landscape orientation
-    # Calculate the center coordinates of the page
+
+    # Create a canvas with Reportlab for the text
+    text_packet = io.BytesIO()
+    text_canvas = canvas.Canvas(text_packet, pagesize=(22 * 72, 11 * 72))
+
+    # Calculate the center coordinates of the page for the text
     center_x = letter[1] / 2 + 300
     center_y = letter[0] / 2 + 300
-    
+
     # Split the answer text into lines
     lines = answer.split('\n')
 
     # Calculate the starting y-coordinate for the text to be centered vertically
-    # Adjust y_start based on the number of lines
     line_height = 12  # Adjust as needed
     total_height = len(lines) * line_height
     y_start = center_y + total_height / 2
 
     # Draw each line of text at the center of the page
     for line in lines:
-        text_width = can.stringWidth(line)
+        text_width = text_canvas.stringWidth(line)
         x_start = center_x - (text_width / 2)
-        can.drawString(x_start, y_start, line)
+        text_canvas.drawString(x_start, y_start, line)
         y_start -= line_height  # Move to the next line
 
-    can.save()    
-    # move to the beginning of the StringIO buffer
-    packet.seek(0)    
-    # create a new PDF with Reportlab
-    new_pdf = PdfReader(packet)
+    text_canvas.save()
+
+    # Move to the beginning of the StringIO buffer for the text
+    text_packet.seek(0)
+
+    # Create a new PDF with Reportlab for the text
+    text_pdf = PdfReader(text_packet)
+
+    # Create a canvas with Reportlab for the image
+    image_packet = io.BytesIO()
+    image_canvas = canvas.Canvas(image_packet, pagesize=(22 * 72, 11 * 72))
+
+    # Load the JPG image
+    image = Image.open(image_path)
+    image_width, image_height = image.size
+
+    # Calculate the position to center the image on the page
+    center_x_image = letter[1] / 2
+    center_y_image = letter[0] / 2
+
+    x_image_start = center_x_image - (image_width / 2)
+    y_image_start = center_y_image - (image_height / 2)
+
+    # Draw the image onto the canvas
+    image_canvas.drawImage(image_path, x_image_start, y_image_start, width=image_width, height=image_height)
+    image_canvas.save()
+
+    # Move to the beginning of the StringIO buffer for the image
+    image_packet.seek(0)
+
+    # Create a new PDF with Reportlab for the image
+    image_pdf = PdfReader(image_packet)
+
+    # Create an output PDF writer
     output = PdfWriter()
-    # add the "watermark" (which is the new pdf) on the existing page
-    # Add a blank page to the output PDF
-    #output.add_blank_page(width=612, height=792)
-    page = new_pdf.pages[-1]
-    page.merge_page(new_pdf.pages[-1])
-    output.add_page(page)
-    output.append_pages_from_reader(existing_pdf)
-    # Write the modified PDF to a new file
-    output_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")], initialfile="amended_pdf")
-    print(output_path)
+
+    # Merge the output with the text PDF (on the first page)
+    for text_page in text_pdf.pages:
+        output.add_page(text_page)
+
+    # Merge the existing PDF with the image PDF (on the last page)
+    for page_number, page in enumerate(existing_pdf.pages):
+        output.add_page(page)
+        if page_number == len(existing_pdf.pages) - 1:
+            for image_page in image_pdf.pages:
+                output.add_page(image_page)
+
+    # Save the modified PDF
+    output_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")],
+                                                initialfile="modified_pdf")
     with open(output_path, 'wb') as output_file:
         output.write(output_file)
-    print("New page added successfully. Modified PDF saved as:", output_path)
+    print("Text and image added successfully. Modified PDF saved as:", output_path)
 
 def main():
     root = tk.Tk()
