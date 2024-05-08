@@ -49,6 +49,7 @@ Once the environment variables setup, the file may be ran using
 ```bash
 python app-poc-lab-interpreter.py
 ```
+Upload "Visit_05-04-2024" subdirectory in the data directory for testing.
 
 ## License
 
