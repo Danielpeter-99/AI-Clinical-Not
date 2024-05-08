@@ -1,5 +1,4 @@
 import textwrap
-# import google.generativeai as genai
 import os
 import tkinter as tk
 from tkinter import filedialog
